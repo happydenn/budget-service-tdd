@@ -1,33 +1,22 @@
 import moment = require('moment')
 
 interface IRepo {
-  getAll(): any[]
+  getAll(): Budget[]
+}
+
+interface Budget {
+  yearMonth: string
+  amount: number
 }
 
 export class BudgetService {
-  repo: IRepo
+  private repo: IRepo
 
   constructor(repo: IRepo) {
     this.repo = repo
   }
 
-  getBudgetByYearMonth(m: moment.Moment) {
-    const budgets = this.repo.getAll()
-    const match = budgets.filter(b => b.yearMonth === m.format('YYYYMM'))
-    if (match.length > 0) {
-      return match[0].amount
-    }
-
-    return 0
-  }
-
-  getProportionOfMonth(start: moment.Moment, end: moment.Moment) {
-    const days = end.diff(start, 'days') + 1
-    const daysInMonth = start.daysInMonth()
-    return days / daysInMonth
-  }
-
-  queryBudget(start: moment.Moment, end: moment.Moment): any {
+  public queryBudget(start: moment.Moment, end: moment.Moment): any {
     if (start.format('YYYYMM') !== end.format('YYYYMM')) {
       const startMonth = start.month()
       let sum = 0
@@ -36,9 +25,15 @@ export class BudgetService {
         let proportion = 1
 
         if (start.month() === startMonth) {
-          proportion = this.getProportionOfMonth(start, start.clone().endOf('month'))
+          proportion = this.getProportionOfMonth(
+            start,
+            start.clone().endOf('month')
+          )
         } else if (start.month() === end.month()) {
-          proportion = this.getProportionOfMonth(start.clone().startOf('month'), end)
+          proportion = this.getProportionOfMonth(
+            start.clone().startOf('month'),
+            end
+          )
         }
 
         sum += budget * proportion
@@ -62,4 +57,15 @@ export class BudgetService {
     return 0
   }
 
+  private getBudgetByYearMonth(m: moment.Moment) {
+    const budgets = this.repo.getAll()
+    const r = budgets.find((b) => b.yearMonth === m.format('YYYYMM'))
+    return r ? r.amount : 0
+  }
+
+  private getProportionOfMonth(start: moment.Moment, end: moment.Moment) {
+    const days = end.diff(start, 'days') + 1
+    const daysInMonth = start.daysInMonth()
+    return days / daysInMonth
+  }
 }
