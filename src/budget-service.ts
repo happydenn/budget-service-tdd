@@ -16,7 +16,7 @@ export class BudgetService {
     this.repo = repo
   }
 
-  public queryBudget(start: moment.Moment, end: moment.Moment): any {
+  public queryBudget(start: moment.Moment, end: moment.Moment) {
     if (start.format('YYYYMM') !== end.format('YYYYMM')) {
       const startMonth = start.month()
       let sum = 0
