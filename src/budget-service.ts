@@ -46,7 +46,7 @@ export class BudgetService {
         start.date(1).add(1, 'month')
       }
 
-      return sum
+      return Math.round(sum * 100) / 100
     }
 
     if (start.format('YYYYMM') === end.format('YYYYMM')) {
@@ -56,7 +56,7 @@ export class BudgetService {
       const daysInMonth = start.daysInMonth()
       const proportion = days / daysInMonth
 
-      return budget * proportion
+      return Math.round(budget * proportion * 100) / 100
     }
 
     return 0
