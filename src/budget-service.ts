@@ -1,9 +1,13 @@
 import moment = require('moment')
 
+interface IRepo {
+  getAll(): any[]
+}
+
 export class BudgetService {
   repo: IRepo
 
-  constructor(repo) {
+  constructor(repo: IRepo) {
     this.repo = repo
   }
 
@@ -24,11 +28,7 @@ export class BudgetService {
   }
 
   queryBudget(start: moment.Moment, end: moment.Moment): any {
-    const budgets = this.repo.getAll()
-
     if (start.format('YYYYMM') !== end.format('YYYYMM')) {
-      const numberOfMonths = end.diff(start, 'month')
-
       const startMonth = start.month()
       let sum = 0
       while (start <= end) {
@@ -62,10 +62,4 @@ export class BudgetService {
     return 0
   }
 
-}
-
-class IRepo {
-  getAll() {
-    return []
-  }
 }

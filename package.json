@@ -2,14 +2,19 @@
   "name": "budget-service",
   "version": "1.0.0",
   "license": "UNLICENSED",
+  "scripts": {
+    "test": "ava-ts --verbose",
+    "test:watch": "npm run test -- --watch"
+  },
+  "dependencies": {
+    "moment": "^2.22.2"
+  },
   "devDependencies": {
     "@types/node": "^10.9.2",
     "ava": "1.0.0-beta.7",
     "ava-ts": "^0.25.1",
+    "prettier": "1.14.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1"
-  },
-  "dependencies": {
-    "moment": "^2.22.2"
   }
 }

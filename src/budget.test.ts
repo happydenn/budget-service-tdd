@@ -1,5 +1,5 @@
 import test from 'ava'
-import { BudgetService } from './budget-service';
+import { BudgetService } from './budget-service'
 import moment = require('moment')
 
 function givenBudgets(budgets) {
@@ -71,27 +71,21 @@ test('2018/01/01 - 2018/12/31', (t) => {
 })
 
 test('2017/12/31 - 2018/01/01', (t) => {
-  const service = givenBudgets([
-    { yearMonth: '201801', amount: 310 }
-  ])
+  const service = givenBudgets([{ yearMonth: '201801', amount: 310 }])
   const actual = service.queryBudget(moment('2017-12-31'), moment('2018-01-01'))
 
   t.is(actual, 10)
 })
 
 test('2016/02/01 - 2016/02/01', (t) => {
-  const service = givenBudgets([
-    { yearMonth: '201602', amount: 300 }
-  ])
+  const service = givenBudgets([{ yearMonth: '201602', amount: 300 }])
   const actual = service.queryBudget(moment('2016-02-01'), moment('2016-02-01'))
 
   t.is(actual, 10.34)
 })
 
 test('2016/02/02 - 2016/02/01', (t) => {
-  const service = givenBudgets([
-    { yearMonth: '201602', amount: 300 }
-  ])
+  const service = givenBudgets([{ yearMonth: '201602', amount: 300 }])
   const actual = service.queryBudget(moment('2016-02-02'), moment('2016-02-01'))
 
   t.is(actual, 0)
