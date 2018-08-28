@@ -17,9 +17,15 @@ export class BudgetService {
   }
 
   public queryBudget(start: moment.Moment, end: moment.Moment) {
-    if (start.format('YYYYMM') !== end.format('YYYYMM')) {
+    let resultBudget = 0
+
+    if (this.isSameMonth(start, end)) {
+      const budget = this.getBudgetByYearMonth(start)
+      const proportion = this.getProportionOfMonth(start, end)
+      resultBudget = budget * proportion
+    } else {
       const startMonth = start.month()
-      let sum = 0
+
       while (start <= end) {
         const budget = this.getBudgetByYearMonth(start)
         let proportion = 1
@@ -36,25 +42,20 @@ export class BudgetService {
           )
         }
 
-        sum += budget * proportion
-
+        resultBudget += budget * proportion
         start.date(1).add(1, 'month')
       }
-
-      return Math.round(sum * 100) / 100
     }
 
-    if (start.format('YYYYMM') === end.format('YYYYMM')) {
-      const budget = this.getBudgetByYearMonth(start)
+    return this.formatBudget(resultBudget)
+  }
 
-      const days = end.diff(start, 'days') + 1
-      const daysInMonth = start.daysInMonth()
-      const proportion = days / daysInMonth
+  private formatBudget(budget: number) {
+    return Math.round(budget * 100) / 100
+  }
 
-      return Math.round(budget * proportion * 100) / 100
-    }
-
-    return 0
+  private isSameMonth(start: moment.Moment, end: moment.Moment) {
+    return start.format('YYYYMM') === end.format('YYYYMM')
   }
 
   private getBudgetByYearMonth(m: moment.Moment) {
