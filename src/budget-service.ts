@@ -13,11 +13,14 @@ export class BudgetService {
     if (start.format('YYYYMM') === end.format('YYYYMM')) {
       const match = budgets.filter(b => b.yearMonth === start.format('YYYYMM'))
       if (match.length > 0) {
-        return match[0].amount
+        const current = match[0]
+        const days = end.diff(start, 'days') + 1
+        const daysInMonth = moment(current.yearMonth, 'YYYYMM').daysInMonth()
+        const proportion = days / daysInMonth
+
+        return current.amount * proportion
       }
     }
-
-    return 310
   }
 
 }

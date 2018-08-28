@@ -25,3 +25,10 @@ test('2018/02/01 - 2018/02/28', (t) => {
 
   t.is(actual, 28)
 })
+
+test('2018/07/01 - 2018/07/02', (t) => {
+  const service = new BudgetService(fakeRepo)
+  const actual = service.queryBudget(moment('2018-07-01'), moment('2018-07-02'))
+
+  t.is(actual, 200)
+})
