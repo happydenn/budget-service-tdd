@@ -21,6 +21,8 @@ export class BudgetService {
         return current.amount * proportion
       }
     }
+
+    return 0
   }
 
 }
